@@ -118,6 +118,7 @@ final class SessionManager: NSObject, ObservableObject {
     private var maxDurationTimer: Timer?
     private var runtimeSession: WKExtendedRuntimeSession?
     private var isStopping = false
+    private var pendingLaunchSource: LaunchSource?
 
     init(
         store: SessionStoring = SessionStore(),
@@ -159,7 +160,13 @@ final class SessionManager: NSObject, ObservableObject {
     }
 
     func start(launchSource: LaunchSource) {
-        guard state == .idle || state == .ended || state == .interrupted else {
+        switch state.startRequestDisposition {
+        case .startImmediately:
+            break
+        case .deferUntilIdle:
+            pendingLaunchSource = launchSource
+            return
+        case .ignore:
             return
         }
 
@@ -245,6 +252,11 @@ final class SessionManager: NSObject, ObservableObject {
         currentDraft = nil
         isStopping = false
         state = .idle
+
+        if let pendingLaunchSource {
+            self.pendingLaunchSource = nil
+            start(launchSource: pendingLaunchSource)
+        }
     }
 
     private func scheduleMaxDurationTimer() {

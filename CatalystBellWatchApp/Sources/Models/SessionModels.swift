@@ -230,6 +230,25 @@ enum SessionState: String {
     case interrupted
 }
 
+enum SessionStartRequestDisposition: Equatable {
+    case startImmediately
+    case deferUntilIdle
+    case ignore
+}
+
+extension SessionState {
+    var startRequestDisposition: SessionStartRequestDisposition {
+        switch self {
+        case .idle, .ended:
+            return .startImmediately
+        case .stopping, .saving, .interrupted:
+            return .deferUntilIdle
+        case .starting, .active:
+            return .ignore
+        }
+    }
+}
+
 enum EndReason: String, Codable, CaseIterable {
     case userStopped
     case maxDurationReached
@@ -239,12 +258,30 @@ enum EndReason: String, Codable, CaseIterable {
     case unknown
 }
 
-enum LaunchSource: String, Codable, CaseIterable {
+enum LaunchSource: String, Codable, CaseIterable, Equatable {
     case complication
     case appIcon
     case shortcut
     case debug
     case unknown
+}
+
+enum CatalystBellDeepLink: Equatable {
+    case start(LaunchSource)
+
+    init?(url: URL) {
+        guard url.scheme?.lowercased() == "catalystbell",
+              url.host?.lowercased() == "start" else {
+            return nil
+        }
+
+        let sourceValue = URLComponents(url: url, resolvingAgainstBaseURL: false)?
+            .queryItems?
+            .first(where: { $0.name == "source" })?
+            .value
+        let source = sourceValue.flatMap(LaunchSource.init(rawValue:)) ?? .unknown
+        self = .start(source)
+    }
 }
 
 enum MoonPhaseName: String, Codable, CaseIterable {

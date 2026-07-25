@@ -32,6 +32,11 @@ targets:
         CFBundleDisplayName: Catalyst Bell
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        CFBundleURLTypes:
+          - CFBundleTypeRole: Viewer
+            CFBundleURLName: com.koyarei.catalystbell.url
+            CFBundleURLSchemes:
+              - catalystbell
         NSLocationWhenInUseUsageDescription: Catalyst Bell uses your approximate location only when saving a grounding session, if you enable location logging.
         WKBackgroundModes:
           - self-care

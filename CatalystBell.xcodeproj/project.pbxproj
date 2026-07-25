@@ -20,6 +20,7 @@
 		8248E49DA8B4FDB3D2510FA5 /* SessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FF7B8356A9FABD246059DFA /* SessionStore.swift */; };
 		8F699DE7BB1B195728EF5890 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 781AEC2B528ED7CE5C85BA33 /* HomeView.swift */; };
 		93CB1D66B377D267D933451C /* CatalystBellComplication.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B405F3AB6592A48CAB0782EC /* CatalystBellComplication.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		9727A11D4D2F4841EBEABCC5 /* ComplicationLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 864153584CAE5DBC6576C07E /* ComplicationLaunchTests.swift */; };
 		9E0A33368E37355F49BC4FAA /* SessionStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43695206272999CD557D956C /* SessionStoreTests.swift */; };
 		AAD8036C65D966101363F02C /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 43B56EEC3CBA215FE9C96D7B /* PrivacyInfo.xcprivacy */; };
 		AE740A734745B4857CC6F56A /* DarkIdleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EDAF4A3D9C93ADB5878F88 /* DarkIdleView.swift */; };
@@ -76,6 +77,7 @@
 		7922ECCF6149B8118B0868D9 /* RainSurfaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RainSurfaceView.swift; sourceTree = "<group>"; };
 		7993CAA1403272703D59E6E0 /* MoonPhaseCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoonPhaseCalculatorTests.swift; sourceTree = "<group>"; };
 		7A9AD81B0382F19BB5F28CB0 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		864153584CAE5DBC6576C07E /* ComplicationLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationLaunchTests.swift; sourceTree = "<group>"; };
 		A033ADDBADF29663CA3A0F80 /* CatalystBellComplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalystBellComplication.swift; sourceTree = "<group>"; };
 		A38272C24FC5C1081B51A387 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A803ABBC485C31296A8B70AC /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 		29A1CA5C9830A495331B4843 /* CatalystBellWatchAppTests */ = {
 			isa = PBXGroup;
 			children = (
+				864153584CAE5DBC6576C07E /* ComplicationLaunchTests.swift */,
 				6B53920D564BB42660CE37E4 /* HapticEngineTests.swift */,
 				7993CAA1403272703D59E6E0 /* MoonPhaseCalculatorTests.swift */,
 				EF19BC4458478BD47F034E15 /* RainVisualTests.swift */,
@@ -325,6 +328,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9727A11D4D2F4841EBEABCC5 /* ComplicationLaunchTests.swift in Sources */,
 				E4B705C6CFC4E8A94A4C3F68 /* HapticEngineTests.swift in Sources */,
 				343686816C7254A479BB12B9 /* MoonPhaseCalculatorTests.swift in Sources */,
 				721C6240C35ABE15F4800208 /* RainVisualTests.swift in Sources */,

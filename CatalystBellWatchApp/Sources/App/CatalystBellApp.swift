@@ -20,12 +20,12 @@ struct CatalystBellApp: App {
                 .environmentObject(sessionManager)
                 .tint(StillRainPalette.accent)
                 .onOpenURL { url in
-                    guard url.scheme == "catalystbell" else {
-                        return
-                    }
+                    guard let deepLink = CatalystBellDeepLink(url: url) else { return }
 
-                    let source: LaunchSource = url.host == "start" ? .complication : .unknown
-                    sessionManager.start(launchSource: source)
+                    switch deepLink {
+                    case let .start(source):
+                        sessionManager.start(launchSource: source)
+                    }
                 }
         }
     }
