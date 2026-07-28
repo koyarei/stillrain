@@ -82,4 +82,5 @@ targets:
     settings:
       base:
         DEVELOPMENT_TEAM: 5B2PZ9NDQB
+        GENERATE_INFOPLIST_FILE: true
         PRODUCT_BUNDLE_IDENTIFIER: com.koyarei.catalystbell.dev20260618.tests

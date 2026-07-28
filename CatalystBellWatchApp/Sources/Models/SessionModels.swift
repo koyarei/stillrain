@@ -256,6 +256,10 @@ enum EndReason: String, Codable, CaseIterable {
     case systemInterrupted
     case appTerminated
     case unknown
+
+    var showsNaturalCompletionScreen: Bool {
+        self == .maxDurationReached
+    }
 }
 
 enum LaunchSource: String, Codable, CaseIterable, Equatable {

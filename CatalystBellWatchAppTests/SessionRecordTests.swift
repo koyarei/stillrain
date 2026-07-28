@@ -2,6 +2,15 @@ import XCTest
 @testable import CatalystBellWatchApp
 
 final class SessionRecordTests: XCTestCase {
+    func testOnlyMaxDurationPresentsNaturalCompletionScreen() {
+        XCTAssertTrue(EndReason.maxDurationReached.showsNaturalCompletionScreen)
+        XCTAssertFalse(EndReason.userStopped.showsNaturalCompletionScreen)
+        XCTAssertFalse(EndReason.runtimeExpired.showsNaturalCompletionScreen)
+        XCTAssertFalse(EndReason.systemInterrupted.showsNaturalCompletionScreen)
+        XCTAssertFalse(EndReason.appTerminated.showsNaturalCompletionScreen)
+        XCTAssertFalse(EndReason.unknown.showsNaturalCompletionScreen)
+    }
+
     func testRecordEncodingRoundTripPreservesRequiredFields() throws {
         let startDate = Date(timeIntervalSince1970: 1_781_747_132)
         let endDate = startDate.addingTimeInterval(259)

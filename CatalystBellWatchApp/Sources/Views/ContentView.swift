@@ -13,7 +13,12 @@ struct ContentView: View {
         switch sessionManager.state {
         case .starting, .active, .stopping, .saving:
             CatalystSessionView()
-        case .ended, .interrupted:
+        case .ended:
+            NaturalCompletionView(
+                intensity: sessionManager.visualIntensity,
+                onDismiss: sessionManager.dismissCompletionScreen
+            )
+        case .interrupted:
             HomeView()
         case .idle:
             HomeView()

@@ -160,6 +160,11 @@ final class SessionManager: NSObject, ObservableObject {
     }
 
     func start(launchSource: LaunchSource) {
+        if isStopping {
+            pendingLaunchSource = launchSource
+            return
+        }
+
         switch state.startRequestDisposition {
         case .startImmediately:
             break
@@ -202,7 +207,13 @@ final class SessionManager: NSObject, ObservableObject {
         }
 
         isStopping = true
-        state = reason == .runtimeExpired || reason == .systemInterrupted ? .interrupted : .stopping
+        if reason.showsNaturalCompletionScreen {
+            state = .ended
+        } else {
+            state = reason == .runtimeExpired || reason == .systemInterrupted
+                ? .interrupted
+                : .stopping
+        }
         hapticEngine.stop()
         hapticVisualEvents.removeAll()
         maxDurationTimer?.invalidate()
@@ -213,6 +224,11 @@ final class SessionManager: NSObject, ObservableObject {
         Task {
             await save(draft: draft, reason: reason)
         }
+    }
+
+    func dismissCompletionScreen() {
+        guard state == .ended else { return }
+        state = .idle
     }
 
     func deleteAllRecords() async {
@@ -229,7 +245,9 @@ final class SessionManager: NSObject, ObservableObject {
     }
 
     private func save(draft: SessionDraft, reason: EndReason) async {
-        state = .saving
+        if !reason.showsNaturalCompletionScreen {
+            state = .saving
+        }
 
         let endDate = Date()
         let location = await locationProvider.requestOneCoarseLocationIfAllowed(enabled: locationLoggingEnabled)
@@ -251,7 +269,9 @@ final class SessionManager: NSObject, ObservableObject {
         records = await store.loadRecords()
         currentDraft = nil
         isStopping = false
-        state = .idle
+        let shouldKeepCompletionScreen = reason.showsNaturalCompletionScreen
+            && state == .ended
+        state = shouldKeepCompletionScreen ? .ended : .idle
 
         if let pendingLaunchSource {
             self.pendingLaunchSource = nil
