@@ -4,7 +4,7 @@ Use this prompt directly with Codex or another coding agent.
 
 ---
 
-Build a new Apple Watch app from scratch called **Catalyst Bell**.
+Build a new Apple Watch app from scratch called **StillRain**.
 
 ## Product goal
 Create a minimal watchOS grounding app. The user launches it from a watch-face complication during an emotionally intense moment. It shows a dark screen, starts repeating haptic feedback, and continues until the user taps once anywhere on the screen. When stopped, it silently saves a minimal local session record with date/time/duration/moon phase and optional coarse location. It must not show any visible completion message.
@@ -34,7 +34,7 @@ Create a minimal watchOS grounding app. The user launches it from a watch-face c
 ## Suggested architecture
 Create these components:
 
-- `CatalystBellApp`: SwiftUI app entry.
+- `StillRainApp`: SwiftUI app entry.
 - `CatalystSessionView`: full-screen black active view; tap anywhere to stop.
 - `SessionManager`: app-scope observable object that owns state, timers, haptics, and extended runtime session.
 - `HapticEngine`: wrapper around WatchKit haptic calls and timer intervals.

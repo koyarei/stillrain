@@ -1,4 +1,4 @@
-# Acceptance Criteria: Catalyst Bell MVP
+# Acceptance Criteria: StillRain MVP
 
 ## 1. Launch
 - [ ] App installs on Apple Watch.

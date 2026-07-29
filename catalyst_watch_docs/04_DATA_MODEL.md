@@ -1,4 +1,4 @@
-# Data Model: Catalyst Bell
+# Data Model: StillRain
 
 ## 1. Data minimization principle
 Only store what is needed for later gentle reflection. Do not store data that can turn the app into surveillance, evidence gathering, or body monitoring.

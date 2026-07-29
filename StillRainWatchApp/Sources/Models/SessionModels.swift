@@ -270,11 +270,11 @@ enum LaunchSource: String, Codable, CaseIterable, Equatable {
     case unknown
 }
 
-enum CatalystBellDeepLink: Equatable {
+enum StillRainDeepLink: Equatable {
     case start(LaunchSource)
 
     init?(url: URL) {
-        guard url.scheme?.lowercased() == "catalystbell",
+        guard url.scheme?.lowercased() == "stillrain",
               url.host?.lowercased() == "start" else {
             return nil
         }

@@ -1,7 +1,7 @@
-# PRD: Catalyst Bell
+# PRD: StillRain
 
 ## 1. Product name
-Working name: **Catalyst Bell**
+Product name: **StillRain**
 
 Other possible names:
 - Return
@@ -11,7 +11,7 @@ Other possible names:
 - Ripple
 
 ## 2. One-sentence description
-Catalyst Bell is a discreet Apple Watch grounding app that starts a repeating haptic anchor from the watch face and runs until the user stops it with one tap, then silently logs only minimal public-context data for later reflection.
+StillRain is a discreet Apple Watch grounding app that starts a repeating haptic anchor from the watch face and runs until the user stops it with one tap, then silently logs only minimal public-context data for later reflection.
 
 ## 3. Philosophy and product intent
 The app exists for moments when emotional catalyst is already active: heated argument, witnessing conflict, sudden shame, fear, defensiveness, overwhelm, envy, or a strong unpleasant feeling. Its purpose is not to analyze the event, score stress, prove what happened, or capture another person. Its purpose is to help the user return to the body before the first reactive impulse becomes speech or behavior.

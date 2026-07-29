@@ -1,20 +1,20 @@
 import Foundation
 import XCTest
-@testable import CatalystBellWatchApp
+@testable import StillRainWatchApp
 
 final class ComplicationLaunchTests: XCTestCase {
     func testComplicationURLStartsWithComplicationSource() {
-        let url = URL(string: "catalystbell://start?source=complication")!
+        let url = URL(string: "stillrain://start?source=complication")!
 
         XCTAssertEqual(
-            CatalystBellDeepLink(url: url),
+            StillRainDeepLink(url: url),
             .start(.complication)
         )
     }
 
     func testUnrecognizedDeepLinksAreRejected() {
-        XCTAssertNil(CatalystBellDeepLink(url: URL(string: "other://start?source=complication")!))
-        XCTAssertNil(CatalystBellDeepLink(url: URL(string: "catalystbell://settings")!))
+        XCTAssertNil(StillRainDeepLink(url: URL(string: "other://start?source=complication")!))
+        XCTAssertNil(StillRainDeepLink(url: URL(string: "stillrain://settings")!))
     }
 
     func testStartRequestRunsImmediatelyFromHomeStates() {

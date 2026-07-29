@@ -1,7 +1,7 @@
-# Privacy and Permissions: Catalyst Bell
+# Privacy and Permissions: StillRain
 
 ## 1. Privacy posture
-Catalyst Bell should be private by design. The user launches it during socially sensitive moments, so the app must avoid collecting anything that could harm trust.
+StillRain should be private by design. The user launches it during socially sensitive moments, so the app must avoid collecting anything that could harm trust.
 
 The MVP should collect no data beyond the minimal local session context the user explicitly expects.
 
@@ -36,11 +36,11 @@ Implementation rules:
 
 Suggested location permission copy:
 
-> Catalyst Bell can save an approximate location with each session so you can later notice context patterns. It never tracks you continuously.
+> StillRain can save an approximate location with each session so you can later notice context patterns. It never tracks you continuously.
 
 Info.plist usage string draft:
 
-> Catalyst Bell uses your approximate location only when saving a grounding session, if you enable location logging.
+> StillRain uses your approximate location only when saving a grounding session, if you enable location logging.
 
 ## 5. Moon phase
 Compute moon phase offline from the session date. This avoids network calls and keeps the app simple.

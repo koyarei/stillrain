@@ -1,6 +1,6 @@
 import WatchKit
 import XCTest
-@testable import CatalystBellWatchApp
+@testable import StillRainWatchApp
 
 final class RippleStyleTests: XCTestCase {
     func testSupportedHapticTypesUseExpectedStyles() {

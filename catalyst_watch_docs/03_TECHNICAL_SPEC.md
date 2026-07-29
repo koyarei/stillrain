@@ -1,4 +1,4 @@
-# Technical Spec: Catalyst Bell
+# Technical Spec: StillRain
 
 ## 1. Platform targets
 Recommended MVP:

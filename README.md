@@ -110,10 +110,10 @@ meet the surface before the first ripple becomes a wave.
 - Accessibility-aware motion and luminance behavior
 - Unit-tested session, haptic, visual, storage, and complication logic
 
-Open `CatalystBell.xcodeproj` in Xcode and run the
-`CatalystBellWatchApp` scheme on an Apple Watch simulator or device. The
-internal target names still reflect the project's working title while the
-public identity transitions to StillRain.
+Open `StillRain.xcodeproj` in Xcode and run the
+`StillRainWatchApp` scheme on an Apple Watch simulator or device. The project,
+targets, source modules, bundle identifiers, and deep-link scheme all share the
+StillRain identity.
 
 ## Maker
 

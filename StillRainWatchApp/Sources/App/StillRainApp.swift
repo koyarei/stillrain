@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct CatalystBellApp: App {
+struct StillRainApp: App {
     @StateObject private var sessionManager = SessionManager()
 
     var body: some Scene {
@@ -20,7 +20,7 @@ struct CatalystBellApp: App {
                 .environmentObject(sessionManager)
                 .tint(StillRainPalette.accent)
                 .onOpenURL { url in
-                    guard let deepLink = CatalystBellDeepLink(url: url) else { return }
+                    guard let deepLink = StillRainDeepLink(url: url) else { return }
 
                     switch deepLink {
                     case let .start(source):

@@ -1,7 +1,7 @@
-# Catalyst Bell: Single-File PRD for Quick Handoff
+# StillRain: Single-File PRD for Quick Handoff
 
 ## Summary
-Catalyst Bell is a minimal Apple Watch app for emotionally intense moments. The user taps a watch-face complication. The app opens to a dark screen and starts repeating haptic feedback. The user taps once anywhere to stop. The app shows no visible text or completion message. It silently saves only a minimal context record: start time, end time, duration, moon phase, and optional coarse location.
+StillRain is a minimal Apple Watch app for emotionally intense moments. The user taps a watch-face complication. The app opens to a dark screen and starts repeating haptic feedback. The user taps once anywhere to stop. The app shows no visible text or completion message. It silently saves only a minimal context record: start time, end time, duration, moon phase, and optional coarse location.
 
 ## Core rule
 During catalyst, the watch should not ask for attention. It should return attention to the body.

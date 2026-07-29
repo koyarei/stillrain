@@ -1,4 +1,4 @@
-# UX Spec: Catalyst Bell
+# UX Spec: StillRain
 
 ## 1. Design principle
 The active session is not a screen to read. It is a tactile anchor.

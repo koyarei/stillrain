@@ -1,0 +1,672 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0984C1D74E93254A35AF650C /* StillRainComplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E12F94A086C798FE8926EA6 /* StillRainComplication.swift */; };
+		17F7B026A7085502ABE6D2A8 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEB96C23001502E243BE10A /* SettingsView.swift */; };
+		322C821535F95D42B8E1BCE1 /* HapticEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774CB2598BCD3D62E6E10F7D /* HapticEngine.swift */; };
+		335356A2826E49DB7C3A6DE0 /* DarkIdleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 598B9F87F057EFE513073936 /* DarkIdleView.swift */; };
+		35241739FB6E9FAAF02D688E /* ComplicationAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 08BE09AD36C5C5C7AD4F74B6 /* ComplicationAssets.xcassets */; };
+		513050009566F7A56B7CD486 /* StillRainComplication.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = AABF8194A90A166C0F01C719 /* StillRainComplication.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		5320BF02250BFCD6A386C401 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6290777646A3B784FC16DA43 /* HomeView.swift */; };
+		5525B3A2067C0B4703DE0695 /* ComplicationLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDB59598BDC51A0BCD8DD6A8 /* ComplicationLaunchTests.swift */; };
+		56F550504A16361594CF8C71 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 547D551122D106B8DE1F0828 /* Assets.xcassets */; };
+		6062D920F19063EDF18D4928 /* MoonPhaseCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D596936E27B5F71D1DF779A /* MoonPhaseCalculatorTests.swift */; };
+		6264DB8213334D0E6BBAFE0E /* SessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC04B1D148F7A4BDDDB51649 /* SessionStore.swift */; };
+		66D0B287EBCD4784ABBCEDAC /* RainSurfaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1ED704986B791684B3CDF47 /* RainSurfaceView.swift */; };
+		6C1A26BEBFB5683BC2C1ABB6 /* SessionRecordTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCE72425AF8E6506ACE4D883 /* SessionRecordTests.swift */; };
+		79D72B470D783A81BD80F63D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA75DE98547192037C3BB37 /* ContentView.swift */; };
+		7A6EEC311A8832C68AD9EB9B /* SessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68AB4DE821D869AE91663E7 /* SessionManager.swift */; };
+		7CF229B7797E016C1D5D747F /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAC153BAE22005EB617D534 /* HistoryView.swift */; };
+		9B58AEA3C1103373671BB164 /* RainVisualTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED996DB9914D8B8717064B4F /* RainVisualTests.swift */; };
+		A43AC31A5ABD68E94183A4A7 /* CatalystSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 697899B67F24AE43B93CBD6F /* CatalystSessionView.swift */; };
+		A796F1F282E6326F863B1D89 /* LocationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4076098E7A95001EE492A54 /* LocationProvider.swift */; };
+		ACF85A1AAC0FC7D23259102B /* MoonPhaseCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 706CA18C2A60D0155CAB8AE3 /* MoonPhaseCalculator.swift */; };
+		B9F9168208768F49BF3DDFA0 /* StillRainApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314E201D9E05014A6976809F /* StillRainApp.swift */; };
+		C51525F60AA42FDFCD0A2FFA /* SessionModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDF1AE30E29DC92623244081 /* SessionModels.swift */; };
+		D187581A45620AC5C84CFE55 /* HapticEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01BCBDA992944A3EBAE4562 /* HapticEngineTests.swift */; };
+		D9F4AE977D18CCDD95D7F8C4 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = F1C5B4D8DF52A49990F3ADAD /* PrivacyInfo.xcprivacy */; };
+		DCACAAB15C911F170ABDD71F /* SessionStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB2F9714084A887BEA3E94E /* SessionStoreTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		3180D3CEB9960F9733A3BE4D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9FE094A5FB92F5F08DF036E1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BDE2DA82DE247EFA249EE598;
+			remoteInfo = StillRainWatchApp;
+		};
+		5D250F953B1F8C37A6280103 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9FE094A5FB92F5F08DF036E1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5EA9FCBD7E86E6BB6853DB53;
+			remoteInfo = StillRainComplication;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		7850C7E7C7F653B884E48B28 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				513050009566F7A56B7CD486 /* StillRainComplication.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		08BE09AD36C5C5C7AD4F74B6 /* ComplicationAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = ComplicationAssets.xcassets; sourceTree = "<group>"; };
+		0AAC153BAE22005EB617D534 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
+		0CA75DE98547192037C3BB37 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		314E201D9E05014A6976809F /* StillRainApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StillRainApp.swift; sourceTree = "<group>"; };
+		327BEB061697F100C5832F80 /* StillRainWatchAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StillRainWatchAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4FB2F9714084A887BEA3E94E /* SessionStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStoreTests.swift; sourceTree = "<group>"; };
+		52516C6AC0A594317B945232 /* StillRainWatchApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StillRainWatchApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		547D551122D106B8DE1F0828 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		598B9F87F057EFE513073936 /* DarkIdleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkIdleView.swift; sourceTree = "<group>"; };
+		5D596936E27B5F71D1DF779A /* MoonPhaseCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoonPhaseCalculatorTests.swift; sourceTree = "<group>"; };
+		6290777646A3B784FC16DA43 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		697899B67F24AE43B93CBD6F /* CatalystSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalystSessionView.swift; sourceTree = "<group>"; };
+		6E12F94A086C798FE8926EA6 /* StillRainComplication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StillRainComplication.swift; sourceTree = "<group>"; };
+		706CA18C2A60D0155CAB8AE3 /* MoonPhaseCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoonPhaseCalculator.swift; sourceTree = "<group>"; };
+		774CB2598BCD3D62E6E10F7D /* HapticEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticEngine.swift; sourceTree = "<group>"; };
+		9DEB96C23001502E243BE10A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A68AB4DE821D869AE91663E7 /* SessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManager.swift; sourceTree = "<group>"; };
+		AABF8194A90A166C0F01C719 /* StillRainComplication.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = StillRainComplication.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		B1ED704986B791684B3CDF47 /* RainSurfaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RainSurfaceView.swift; sourceTree = "<group>"; };
+		C01BCBDA992944A3EBAE4562 /* HapticEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticEngineTests.swift; sourceTree = "<group>"; };
+		C4076098E7A95001EE492A54 /* LocationProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationProvider.swift; sourceTree = "<group>"; };
+		CCE72425AF8E6506ACE4D883 /* SessionRecordTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionRecordTests.swift; sourceTree = "<group>"; };
+		DC04B1D148F7A4BDDDB51649 /* SessionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStore.swift; sourceTree = "<group>"; };
+		DDB59598BDC51A0BCD8DD6A8 /* ComplicationLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationLaunchTests.swift; sourceTree = "<group>"; };
+		ED996DB9914D8B8717064B4F /* RainVisualTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RainVisualTests.swift; sourceTree = "<group>"; };
+		F1C5B4D8DF52A49990F3ADAD /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		FDF1AE30E29DC92623244081 /* SessionModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionModels.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		1EFE896B2767DB3CC0AC0CFE /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				697899B67F24AE43B93CBD6F /* CatalystSessionView.swift */,
+				0CA75DE98547192037C3BB37 /* ContentView.swift */,
+				598B9F87F057EFE513073936 /* DarkIdleView.swift */,
+				0AAC153BAE22005EB617D534 /* HistoryView.swift */,
+				6290777646A3B784FC16DA43 /* HomeView.swift */,
+				B1ED704986B791684B3CDF47 /* RainSurfaceView.swift */,
+				9DEB96C23001502E243BE10A /* SettingsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		1F284C586CFC7C30433A63A7 /* StillRainWatchAppTests */ = {
+			isa = PBXGroup;
+			children = (
+				DDB59598BDC51A0BCD8DD6A8 /* ComplicationLaunchTests.swift */,
+				C01BCBDA992944A3EBAE4562 /* HapticEngineTests.swift */,
+				5D596936E27B5F71D1DF779A /* MoonPhaseCalculatorTests.swift */,
+				ED996DB9914D8B8717064B4F /* RainVisualTests.swift */,
+				CCE72425AF8E6506ACE4D883 /* SessionRecordTests.swift */,
+				4FB2F9714084A887BEA3E94E /* SessionStoreTests.swift */,
+			);
+			path = StillRainWatchAppTests;
+			sourceTree = "<group>";
+		};
+		2885C8F31A930D8F57E3C631 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				547D551122D106B8DE1F0828 /* Assets.xcassets */,
+				F1C5B4D8DF52A49990F3ADAD /* PrivacyInfo.xcprivacy */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		35843440254C9E165FE52205 = {
+			isa = PBXGroup;
+			children = (
+				A0D970CB7A9589679B49BD88 /* Sources */,
+				4C0EA17B82CFE71141A14BD0 /* Sources */,
+				1F284C586CFC7C30433A63A7 /* StillRainWatchAppTests */,
+				F396C4A4DB5516344AFA7EAD /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		4C0EA17B82CFE71141A14BD0 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				EEA0FF7C48E747432AF84DA3 /* App */,
+				BE92D5CFDCAFDB574658AD56 /* Models */,
+				2885C8F31A930D8F57E3C631 /* Resources */,
+				906A5B1516A883AFCF38D1C4 /* Services */,
+				1EFE896B2767DB3CC0AC0CFE /* Views */,
+			);
+			name = Sources;
+			path = StillRainWatchApp/Sources;
+			sourceTree = "<group>";
+		};
+		906A5B1516A883AFCF38D1C4 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				774CB2598BCD3D62E6E10F7D /* HapticEngine.swift */,
+				C4076098E7A95001EE492A54 /* LocationProvider.swift */,
+				706CA18C2A60D0155CAB8AE3 /* MoonPhaseCalculator.swift */,
+				A68AB4DE821D869AE91663E7 /* SessionManager.swift */,
+				DC04B1D148F7A4BDDDB51649 /* SessionStore.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		A0D970CB7A9589679B49BD88 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				08BE09AD36C5C5C7AD4F74B6 /* ComplicationAssets.xcassets */,
+				6E12F94A086C798FE8926EA6 /* StillRainComplication.swift */,
+			);
+			name = Sources;
+			path = StillRainComplication/Sources;
+			sourceTree = "<group>";
+		};
+		BE92D5CFDCAFDB574658AD56 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				FDF1AE30E29DC92623244081 /* SessionModels.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		EEA0FF7C48E747432AF84DA3 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				314E201D9E05014A6976809F /* StillRainApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		F396C4A4DB5516344AFA7EAD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AABF8194A90A166C0F01C719 /* StillRainComplication.appex */,
+				52516C6AC0A594317B945232 /* StillRainWatchApp.app */,
+				327BEB061697F100C5832F80 /* StillRainWatchAppTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		54CA9C4019DA141F0192B91D /* StillRainWatchAppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E468802CE9ADA57EEEF9EEDB /* Build configuration list for PBXNativeTarget "StillRainWatchAppTests" */;
+			buildPhases = (
+				BDB6CFD0952E1CD6BFA2B6E0 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				87DF68416F8555B2FB603345 /* PBXTargetDependency */,
+			);
+			name = StillRainWatchAppTests;
+			packageProductDependencies = (
+			);
+			productName = StillRainWatchAppTests;
+			productReference = 327BEB061697F100C5832F80 /* StillRainWatchAppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		5EA9FCBD7E86E6BB6853DB53 /* StillRainComplication */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F7BCAE3108FFF9FD5C0ECE61 /* Build configuration list for PBXNativeTarget "StillRainComplication" */;
+			buildPhases = (
+				EFB07DD75238F57FB21FECA1 /* Sources */,
+				3FFB0B5AD9ECF19EDB8C4827 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = StillRainComplication;
+			packageProductDependencies = (
+			);
+			productName = StillRainComplication;
+			productReference = AABF8194A90A166C0F01C719 /* StillRainComplication.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		BDE2DA82DE247EFA249EE598 /* StillRainWatchApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7006D24AF6C8E381E39431A7 /* Build configuration list for PBXNativeTarget "StillRainWatchApp" */;
+			buildPhases = (
+				BC99A010498EB0A8A685C89E /* Sources */,
+				F09ACD3F7AC4EEBA94854C8E /* Resources */,
+				7850C7E7C7F653B884E48B28 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				06C8E34F00EC0FECB67D8025 /* PBXTargetDependency */,
+			);
+			name = StillRainWatchApp;
+			packageProductDependencies = (
+			);
+			productName = StillRainWatchApp;
+			productReference = 52516C6AC0A594317B945232 /* StillRainWatchApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9FE094A5FB92F5F08DF036E1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					54CA9C4019DA141F0192B91D = {
+						DevelopmentTeam = 5B2PZ9NDQB;
+					};
+					5EA9FCBD7E86E6BB6853DB53 = {
+						DevelopmentTeam = 5B2PZ9NDQB;
+					};
+					BDE2DA82DE247EFA249EE598 = {
+						DevelopmentTeam = 5B2PZ9NDQB;
+					};
+				};
+			};
+			buildConfigurationList = 44009B8FC40EDB7CA41758A9 /* Build configuration list for PBXProject "StillRain" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 35843440254C9E165FE52205;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = F396C4A4DB5516344AFA7EAD /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				5EA9FCBD7E86E6BB6853DB53 /* StillRainComplication */,
+				BDE2DA82DE247EFA249EE598 /* StillRainWatchApp */,
+				54CA9C4019DA141F0192B91D /* StillRainWatchAppTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3FFB0B5AD9ECF19EDB8C4827 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				35241739FB6E9FAAF02D688E /* ComplicationAssets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F09ACD3F7AC4EEBA94854C8E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				56F550504A16361594CF8C71 /* Assets.xcassets in Resources */,
+				D9F4AE977D18CCDD95D7F8C4 /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BC99A010498EB0A8A685C89E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A43AC31A5ABD68E94183A4A7 /* CatalystSessionView.swift in Sources */,
+				79D72B470D783A81BD80F63D /* ContentView.swift in Sources */,
+				335356A2826E49DB7C3A6DE0 /* DarkIdleView.swift in Sources */,
+				322C821535F95D42B8E1BCE1 /* HapticEngine.swift in Sources */,
+				7CF229B7797E016C1D5D747F /* HistoryView.swift in Sources */,
+				5320BF02250BFCD6A386C401 /* HomeView.swift in Sources */,
+				A796F1F282E6326F863B1D89 /* LocationProvider.swift in Sources */,
+				ACF85A1AAC0FC7D23259102B /* MoonPhaseCalculator.swift in Sources */,
+				66D0B287EBCD4784ABBCEDAC /* RainSurfaceView.swift in Sources */,
+				7A6EEC311A8832C68AD9EB9B /* SessionManager.swift in Sources */,
+				C51525F60AA42FDFCD0A2FFA /* SessionModels.swift in Sources */,
+				6264DB8213334D0E6BBAFE0E /* SessionStore.swift in Sources */,
+				17F7B026A7085502ABE6D2A8 /* SettingsView.swift in Sources */,
+				B9F9168208768F49BF3DDFA0 /* StillRainApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BDB6CFD0952E1CD6BFA2B6E0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5525B3A2067C0B4703DE0695 /* ComplicationLaunchTests.swift in Sources */,
+				D187581A45620AC5C84CFE55 /* HapticEngineTests.swift in Sources */,
+				6062D920F19063EDF18D4928 /* MoonPhaseCalculatorTests.swift in Sources */,
+				9B58AEA3C1103373671BB164 /* RainVisualTests.swift in Sources */,
+				6C1A26BEBFB5683BC2C1ABB6 /* SessionRecordTests.swift in Sources */,
+				DCACAAB15C911F170ABDD71F /* SessionStoreTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EFB07DD75238F57FB21FECA1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0984C1D74E93254A35AF650C /* StillRainComplication.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		06C8E34F00EC0FECB67D8025 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5EA9FCBD7E86E6BB6853DB53 /* StillRainComplication */;
+			targetProxy = 5D250F953B1F8C37A6280103 /* PBXContainerItemProxy */;
+		};
+		87DF68416F8555B2FB603345 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BDE2DA82DE247EFA249EE598 /* StillRainWatchApp */;
+			targetProxy = 3180D3CEB9960F9733A3BE4D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		0919F6CCE3D4501B515D6A8A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 5B2PZ9NDQB;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+				WATCHOS_DEPLOYMENT_TARGET = 11.0;
+			};
+			name = Release;
+		};
+		21C4F9BE015BB321A3E44013 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = StillRainComplication/StillRainComplication.entitlements;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5B2PZ9NDQB;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = StillRainComplication/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.koyarei.stillrain.dev20260618.widgets;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 11.0;
+			};
+			name = Release;
+		};
+		4B1C345E136F27C57D07DD25 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = StillRainWatchApp/StillRainWatchApp.entitlements;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5B2PZ9NDQB;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = StillRainWatchApp/Info.plist;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.koyarei.stillrain.dev20260618;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 11.0;
+			};
+			name = Release;
+		};
+		5C1C65E2D9B94686748ADAF5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = StillRainWatchApp/StillRainWatchApp.entitlements;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5B2PZ9NDQB;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = StillRainWatchApp/Info.plist;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.koyarei.stillrain.dev20260618;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 11.0;
+			};
+			name = Debug;
+		};
+		643702E71C7C05F35EF74040 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 5B2PZ9NDQB;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+				WATCHOS_DEPLOYMENT_TARGET = 11.0;
+			};
+			name = Debug;
+		};
+		7C651B6A5C38E18CA3AC7F85 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 5B2PZ9NDQB;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.koyarei.stillrain.dev20260618.tests;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StillRainWatchApp.app/StillRainWatchApp";
+				WATCHOS_DEPLOYMENT_TARGET = 11.0;
+			};
+			name = Debug;
+		};
+		D3CC186320CF2DD69C84272F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 5B2PZ9NDQB;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.koyarei.stillrain.dev20260618.tests;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StillRainWatchApp.app/StillRainWatchApp";
+				WATCHOS_DEPLOYMENT_TARGET = 11.0;
+			};
+			name = Release;
+		};
+		F61EADED9471FFD7C6BF1F3C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = StillRainComplication/StillRainComplication.entitlements;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5B2PZ9NDQB;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = StillRainComplication/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.koyarei.stillrain.dev20260618.widgets;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 11.0;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		44009B8FC40EDB7CA41758A9 /* Build configuration list for PBXProject "StillRain" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				643702E71C7C05F35EF74040 /* Debug */,
+				0919F6CCE3D4501B515D6A8A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		7006D24AF6C8E381E39431A7 /* Build configuration list for PBXNativeTarget "StillRainWatchApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5C1C65E2D9B94686748ADAF5 /* Debug */,
+				4B1C345E136F27C57D07DD25 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E468802CE9ADA57EEEF9EEDB /* Build configuration list for PBXNativeTarget "StillRainWatchAppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7C651B6A5C38E18CA3AC7F85 /* Debug */,
+				D3CC186320CF2DD69C84272F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F7BCAE3108FFF9FD5C0ECE61 /* Build configuration list for PBXNativeTarget "StillRainComplication" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F61EADED9471FFD7C6BF1F3C /* Debug */,
+				21C4F9BE015BB321A3E44013 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9FE094A5FB92F5F08DF036E1 /* Project object */;
+}

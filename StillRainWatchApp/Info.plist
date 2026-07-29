@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Catalyst Bell</string>
+	<string>StillRain</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -24,19 +24,19 @@
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
 			<key>CFBundleURLName</key>
-			<string>com.koyarei.catalystbell.url</string>
+			<string>com.koyarei.stillrain.url</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>catalystbell</string>
+				<string>stillrain</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Catalyst Bell uses your approximate location only when saving a grounding session, if you enable location logging.</string>
+	<string>StillRain uses your approximate location only when saving a grounding session, if you enable location logging.</string>
 	<key>WKAppBundleIdentifier</key>
-	<string>com.koyarei.catalystbell.dev20260618</string>
+	<string>com.koyarei.stillrain.dev20260618</string>
 	<key>WKApplication</key>
 	<true/>
 	<key>WKBackgroundModes</key>

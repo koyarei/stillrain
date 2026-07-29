@@ -1,9 +1,9 @@
-# Catalyst Bell Watch App Handoff Package
+# StillRain Watch App Handoff Package
 
 This package contains product and engineering docs for building a minimal Apple Watch grounding app from scratch.
 
 ## Product summary
-Catalyst Bell is a discreet Apple Watch app that can be launched from the watch face with one tap during emotionally intense catalyst. It displays a dark screen, provides repeating haptic feedback until stopped with one tap, then silently saves a small context record: start time, end time, duration, coarse location if permitted, and moon phase. It does not record audio, does not read health data, does not track biometrics, does not show visible prompts, and does not display a completion message on the watch.
+StillRain is a discreet Apple Watch app that can be launched from the watch face with one tap during emotionally intense catalyst. It displays a dark screen, provides repeating haptic feedback until stopped with one tap, then silently saves a small context record: start time, end time, duration, coarse location if permitted, and moon phase. It does not record audio, does not read health data, does not track biometrics, does not show visible prompts, and does not display a completion message on the watch.
 
 ## Recommended build order
 1. Read `01_PRD.md` for the product definition.

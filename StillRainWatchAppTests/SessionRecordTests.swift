@@ -1,5 +1,5 @@
 import XCTest
-@testable import CatalystBellWatchApp
+@testable import StillRainWatchApp
 
 final class SessionRecordTests: XCTestCase {
     func testOnlyMaxDurationPresentsNaturalCompletionScreen() {
