@@ -44,7 +44,7 @@ you are ready, tap once to release the moment.
 <p align="center">
   <img src="./READMEAssets/home.png" alt="StillRain home screen with Start and Settings" width="280">
   &nbsp;&nbsp;&nbsp;
-  <img src="./READMEAssets/still-rain.png" alt="StillRain active session with overlapping blue, teal, and mint rain ripples" width="280">
+  <img src="./READMEAssets/still-rain.gif" alt="StillRain active session with animated blue, teal, and mint rain ripples expanding across a dark surface" width="280">
 </p>
 
 <p align="center">
