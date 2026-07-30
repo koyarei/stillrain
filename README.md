@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./READMEAssets/icon.png" alt="StillRain — a raindrop meeting quiet water" width="152">
+  <img src="./READMEAssets/icon-watch.png" alt="StillRain — a raindrop meeting quiet water in a circular watchOS icon" width="152">
 </p>
 
 <h1 align="center">StillRain</h1>
