@@ -42,9 +42,9 @@ you are ready, tap once to release the moment.
 ## On the watch
 
 <p align="center">
-  <img src="./READMEAssets/home.png" alt="StillRain home screen with Start and Settings" width="280">
+  <img src="./READMEAssets/home-watch.png" alt="StillRain home screen with Start and Settings framed in a graphite Apple Watch" width="260">
   &nbsp;&nbsp;&nbsp;
-  <img src="./READMEAssets/still-rain.gif" alt="StillRain active session with animated blue, teal, and mint rain ripples expanding across a dark surface" width="280">
+  <img src="./READMEAssets/still-rain-watch.gif" alt="StillRain active session framed in a graphite Apple Watch, with animated blue, teal, and mint rain ripples expanding across a dark surface" width="260">
 </p>
 
 <p align="center">
