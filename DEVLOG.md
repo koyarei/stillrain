@@ -15,6 +15,12 @@ so the evolution of the product is easier to follow than a raw commit list.
 - Calibrated ripple scale to real-device wrist perception: Click 1, Start and
   Stop 2, Direction Down 3, Direction Up 4, and Success 5. Radius now carries
   most of the contrast, with gentler changes to opacity, stroke, and lifetime.
+- Added moonlit overlap glints at expanding-ring intersection points, limited to
+  the early collision window and capped at four highlights per frame to protect
+  watch rendering performance.
+- Added occasional seeded spatial motifs for repeated pulses: softly rotated
+  arcs, diagonals, and constellations punctuate the mostly organic rain without
+  increasing the particle or per-frame rendering budget.
 - Made the featured ripple larger, brighter, softly glowing, and slower to
   disappear while preserving each haptic type's established color family.
 - Kept single and compound haptics visually restrained, and carried the new
@@ -28,7 +34,7 @@ so the evolution of the product is easier to follow than a raw commit list.
   the extended runtime session alive until that screen is dismissed.
 - Updated product and technical documentation to match the runtime and duration
   behavior.
-- Verified the watchOS build and all 53 unit tests in the watchOS simulator.
+- Verified the watchOS build and all 61 unit tests in the watchOS simulator.
 
 ## 2026-07-30 — README presentation polish
 

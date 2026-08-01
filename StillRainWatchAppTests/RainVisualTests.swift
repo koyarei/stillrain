@@ -53,6 +53,135 @@ final class RainPositionGeneratorTests: XCTestCase {
         XCTAssertEqual(Set(positions.map { "\($0.x),\($0.y)" }).count, 6)
         XCTAssertTrue(positions.allSatisfy { (0...1).contains($0.x) && (0...1).contains($0.y) })
     }
+
+    func testMotifsRemainOccasionalAndSelectionIsDeterministic() {
+        let seeds = (0..<512).map(UInt64.init)
+        let firstSelections = seeds.map {
+            RainSpatialMotif.selection(seed: $0, hitCount: 8)
+        }
+        let secondSelections = seeds.map {
+            RainSpatialMotif.selection(seed: $0, hitCount: 8)
+        }
+
+        XCTAssertEqual(firstSelections, secondSelections)
+        for motif in RainSpatialMotif.allCases {
+            XCTAssertTrue(firstSelections.contains(motif))
+        }
+        XCTAssertGreaterThan(
+            firstSelections.filter { $0 == .organic }.count,
+            firstSelections.filter { $0 != .organic }.count
+        )
+    }
+
+    func testFewerThanFourHitsAlwaysUseOrganicPlacement() {
+        for hitCount in 1...3 {
+            for seed in 0..<64 {
+                XCTAssertEqual(
+                    RainSpatialMotif.selection(
+                        seed: UInt64(seed),
+                        hitCount: hitCount
+                    ),
+                    .organic
+                )
+            }
+        }
+    }
+
+    func testEveryMotifProducesDistinctInBoundsPositions() {
+        for motif in RainSpatialMotif.allCases where motif != .organic {
+            let positions = (0..<12).map {
+                RainPositionGenerator.normalizedPosition(
+                    seed: 0xC011EC7,
+                    hitIndex: $0,
+                    hitCount: 12,
+                    motif: motif
+                )
+            }
+
+            XCTAssertEqual(
+                Set(positions.map { "\($0.x),\($0.y)" }).count,
+                positions.count,
+                "\(motif) should not repeat a point"
+            )
+            XCTAssertTrue(positions.allSatisfy {
+                (0.08...0.92).contains($0.x) && (0.08...0.92).contains($0.y)
+            })
+        }
+    }
+}
+
+final class RainOverlapGlintGeometryTests: XCTestCase {
+    func testEqualRingsProduceTwoExpectedIntersectionGlints() {
+        let firstID = UUID()
+        let secondID = UUID()
+        let glints = RainOverlapGlintGeometry.glints(for: [
+            ring(id: firstID, x: 0, y: 0, radius: 5),
+            ring(id: secondID, x: 8, y: 0, radius: 5)
+        ])
+
+        XCTAssertEqual(glints.count, 2)
+        XCTAssertTrue(glints.contains {
+            abs($0.position.x - 4) < 0.000_001
+                && abs($0.position.y - 3) < 0.000_001
+        })
+        XCTAssertTrue(glints.contains {
+            abs($0.position.x - 4) < 0.000_001
+                && abs($0.position.y + 3) < 0.000_001
+        })
+    }
+
+    func testGlintsAppearOnlyDuringEarlyCollisionWindow() {
+        let firstID = UUID()
+        let secondID = UUID()
+        let separated = RainOverlapGlintGeometry.glints(for: [
+            ring(id: firstID, x: 0, y: 0, radius: 5),
+            ring(id: secondID, x: 12, y: 0, radius: 5)
+        ])
+        let deeplyOverlapped = RainOverlapGlintGeometry.glints(for: [
+            ring(id: firstID, x: 0, y: 0, radius: 5),
+            ring(id: secondID, x: 6, y: 0, radius: 5)
+        ])
+
+        XCTAssertTrue(separated.isEmpty)
+        XCTAssertTrue(deeplyOverlapped.isEmpty)
+    }
+
+    func testRingsFromSameParticleDoNotCreateGlints() {
+        let particleID = UUID()
+        let glints = RainOverlapGlintGeometry.glints(for: [
+            ring(id: particleID, x: 0, y: 0, radius: 5),
+            ring(id: particleID, x: 8, y: 0, radius: 5)
+        ])
+
+        XCTAssertTrue(glints.isEmpty)
+    }
+
+    func testGlintCountIsCappedForRenderingBudget() {
+        let rings = (0..<6).map {
+            ring(id: UUID(), x: CGFloat($0 * 8), y: 0, radius: 5)
+        }
+        let glints = RainOverlapGlintGeometry.glints(for: rings)
+
+        XCTAssertFalse(glints.isEmpty)
+        XCTAssertLessThanOrEqual(
+            glints.count,
+            RainOverlapGlintGeometry.maximumGlintCount
+        )
+    }
+
+    private func ring(
+        id: UUID,
+        x: CGFloat,
+        y: CGFloat,
+        radius: CGFloat
+    ) -> RainRingGeometry {
+        RainRingGeometry(
+            particleID: id,
+            center: CGPoint(x: x, y: y),
+            radius: radius,
+            opacity: 0.5
+        )
+    }
 }
 
 final class RainRippleSurpriseTests: XCTestCase {
@@ -204,6 +333,44 @@ final class RainParticleStoreTests: XCTestCase {
 
         XCTAssertEqual(store.particles.first?.isFeatured, false)
         XCTAssertNil(store.particles.first?.echoPosition)
+    }
+
+    func testParticleStorePreservesSelectedMotifGeometry() throws {
+        let store = RainParticleStore(maximumParticleCount: 8)
+        let now = Date()
+        let seed = try XCTUnwrap((0..<100).map(UInt64.init).first {
+            RainSpatialMotif.selection(seed: $0, hitCount: 8) != .organic
+        })
+        let motif = RainSpatialMotif.selection(seed: seed, hitCount: 8)
+        let pulseID = UUID()
+        let events = (0..<8).map {
+            event(
+                pulseID: pulseID,
+                hitIndex: $0,
+                date: now,
+                seed: seed
+            )
+        }
+
+        store.consume(
+            events,
+            visualStyle: .stillRain,
+            reduceMotion: false,
+            hitsPerPulse: 8,
+            now: now
+        )
+
+        XCTAssertEqual(store.particles.count, events.count)
+        for (particle, hitIndex) in zip(store.particles, events.indices) {
+            let expected = RainPositionGenerator.normalizedPosition(
+                seed: seed,
+                hitIndex: hitIndex,
+                hitCount: 8,
+                motif: motif
+            )
+            XCTAssertEqual(particle.position.x, expected.x, accuracy: 0.000_001)
+            XCTAssertEqual(particle.position.y, expected.y, accuracy: 0.000_001)
+        }
     }
 
     func testFeaturedRippleLivesLongerThanOrdinaryRipple() {

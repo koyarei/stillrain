@@ -15,6 +15,7 @@ enum RainRipplePalette {
     static let deepBlue = Color(red: 0.34, green: 0.66, blue: 1.0)
     static let teal = Color(red: 0.30, green: 0.84, blue: 0.80)
     static let mint = Color(red: 0.42, green: 0.92, blue: 0.64)
+    static let moonlight = Color(red: 0.78, green: 0.93, blue: 1.0)
 
     private static let vividSkyBlue = Color(red: 0.24, green: 0.88, blue: 1.0)
     private static let vividDeepBlue = Color(red: 0.27, green: 0.58, blue: 1.0)
@@ -68,10 +69,7 @@ enum RainRippleSurprise {
     }
 
     static func isFeatured(_ event: HapticVisualEvent, hitsPerPulse: Int) -> Bool {
-        let isRepeatingType = event.hapticType == .click
-            || event.hapticType == .directionUp
-            || event.hapticType == .directionDown
-        guard isRepeatingType,
+        guard supportsRepeatedHits(event.hapticType),
               let featuredIndex = featuredHitIndex(
                 seed: event.positionSeed,
                 hitCount: hitsPerPulse
@@ -79,6 +77,12 @@ enum RainRippleSurprise {
             return false
         }
         return event.hitIndex == featuredIndex
+    }
+
+    static func supportsRepeatedHits(_ hapticType: WKHapticType) -> Bool {
+        hapticType == .click
+            || hapticType == .directionUp
+            || hapticType == .directionDown
     }
 
     static func echoPosition(seed: UInt64, around position: CGPoint) -> CGPoint? {
@@ -241,8 +245,55 @@ struct RippleStyle: Equatable {
     }
 }
 
+enum RainSpatialMotif: CaseIterable, Equatable {
+    case organic
+    case arc
+    case diagonal
+    case constellation
+
+    private static let selectionSalt: UInt64 = 0xA0761D6478BD642F
+
+    static func selection(seed: UInt64, hitCount: Int) -> RainSpatialMotif {
+        guard hitCount >= 4 else { return .organic }
+
+        // Keep most pulses organic. The remaining three eighths are divided
+        // evenly among motifs, with the seed making the choice stable per pulse.
+        switch mixed(seed ^ selectionSalt) % 8 {
+        case 0: return .arc
+        case 1: return .diagonal
+        case 2: return .constellation
+        default: return .organic
+        }
+    }
+
+    private static func mixed(_ seed: UInt64) -> UInt64 {
+        var value = seed &+ 0x9E3779B97F4A7C15
+        value = (value ^ (value >> 30)) &* 0xBF58476D1CE4E5B9
+        value = (value ^ (value >> 27)) &* 0x94D049BB133111EB
+        return value ^ (value >> 31)
+    }
+}
+
 struct RainPositionGenerator {
-    static func normalizedPosition(seed: UInt64, hitIndex: Int) -> CGPoint {
+    static func normalizedPosition(
+        seed: UInt64,
+        hitIndex: Int,
+        hitCount: Int = 1,
+        motif: RainSpatialMotif = .organic
+    ) -> CGPoint {
+        switch motif {
+        case .organic:
+            return organicPosition(seed: seed, hitIndex: hitIndex)
+        case .arc:
+            return arcPosition(seed: seed, hitIndex: hitIndex, hitCount: hitCount)
+        case .diagonal:
+            return diagonalPosition(seed: seed, hitIndex: hitIndex, hitCount: hitCount)
+        case .constellation:
+            return constellationPosition(seed: seed, hitIndex: hitIndex)
+        }
+    }
+
+    private static func organicPosition(seed: UInt64, hitIndex: Int) -> CGPoint {
         var generator = SplitMix64(state: seed)
         let edgeValue = generator.next()
         let baseX = unit(generator.next())
@@ -278,6 +329,92 @@ struct RainPositionGenerator {
         return CGPoint(x: min(max(x, 0.03), 0.97), y: min(max(y, 0.03), 0.97))
     }
 
+    private static func arcPosition(
+        seed: UInt64,
+        hitIndex: Int,
+        hitCount: Int
+    ) -> CGPoint {
+        var generator = SplitMix64(state: seed ^ 0xE7037ED1A0B428DB)
+        let rotation = unit(generator.next()) * .pi * 2
+        let direction: CGFloat = generator.next().isMultiple(of: 2) ? 1 : -1
+        let centerX = 0.5 + ((unit(generator.next()) - 0.5) * 0.08)
+        let centerY = 0.5 + ((unit(generator.next()) - 0.5) * 0.08)
+        let progress = normalizedProgress(hitIndex: hitIndex, hitCount: hitCount)
+        let angle = rotation + (direction * ((progress - 0.5) * 1.75))
+
+        return clampedPosition(CGPoint(
+            x: centerX + (cos(angle) * 0.29),
+            y: centerY + (sin(angle) * 0.24)
+        ))
+    }
+
+    private static func diagonalPosition(
+        seed: UInt64,
+        hitIndex: Int,
+        hitCount: Int
+    ) -> CGPoint {
+        var generator = SplitMix64(state: seed ^ 0x8EBC6AF09C88C6E3)
+        let rises = generator.next().isMultiple(of: 2)
+        let reverses = generator.next().isMultiple(of: 2)
+        let translationX = (unit(generator.next()) - 0.5) * 0.06
+        let translationY = (unit(generator.next()) - 0.5) * 0.06
+        let rawProgress = normalizedProgress(hitIndex: hitIndex, hitCount: hitCount)
+        let progress = reverses ? 1 - rawProgress : rawProgress
+        var pointGenerator = SplitMix64(
+            state: seed &+ UInt64(truncatingIfNeeded: hitIndex) &* 0xD1342543DE82EF95
+        )
+        let softness = (unit(pointGenerator.next()) - 0.5) * 0.026
+        let x = 0.17 + (progress * 0.66) + translationX + softness
+        let baseY = rises ? 0.83 - (progress * 0.66) : 0.17 + (progress * 0.66)
+        let y = baseY + translationY + (rises ? softness : -softness)
+
+        return clampedPosition(CGPoint(x: x, y: y))
+    }
+
+    private static func constellationPosition(seed: UInt64, hitIndex: Int) -> CGPoint {
+        let points = [
+            CGPoint(x: -0.32, y: -0.08),
+            CGPoint(x: -0.19, y: -0.29),
+            CGPoint(x: 0.02, y: -0.18),
+            CGPoint(x: 0.16, y: -0.33),
+            CGPoint(x: 0.31, y: -0.12),
+            CGPoint(x: 0.18, y: 0.04),
+            CGPoint(x: 0.34, y: 0.20),
+            CGPoint(x: 0.08, y: 0.17),
+            CGPoint(x: -0.03, y: 0.34),
+            CGPoint(x: -0.18, y: 0.20),
+            CGPoint(x: -0.34, y: 0.31),
+            CGPoint(x: -0.28, y: 0.07)
+        ]
+        var generator = SplitMix64(state: seed ^ 0x589965CC75374CC3)
+        let rotation = unit(generator.next()) * .pi * 2
+        let scale = 0.78 + (unit(generator.next()) * 0.10)
+        let centerX = 0.5 + ((unit(generator.next()) - 0.5) * 0.06)
+        let centerY = 0.5 + ((unit(generator.next()) - 0.5) * 0.06)
+        let offset = Int(generator.next() % UInt64(points.count))
+        let pointIndex = (offset + (max(0, hitIndex) * 5)) % points.count
+        let point = points[pointIndex]
+        let rotatedX = (point.x * cos(rotation)) - (point.y * sin(rotation))
+        let rotatedY = (point.x * sin(rotation)) + (point.y * cos(rotation))
+
+        return clampedPosition(CGPoint(
+            x: centerX + (rotatedX * scale),
+            y: centerY + (rotatedY * scale)
+        ))
+    }
+
+    private static func normalizedProgress(hitIndex: Int, hitCount: Int) -> CGFloat {
+        guard hitCount > 1 else { return 0.5 }
+        return CGFloat(min(max(hitIndex, 0), hitCount - 1)) / CGFloat(hitCount - 1)
+    }
+
+    private static func clampedPosition(_ position: CGPoint) -> CGPoint {
+        CGPoint(
+            x: min(max(position.x, 0.08), 0.92),
+            y: min(max(position.y, 0.08), 0.92)
+        )
+    }
+
     private static func unit(_ value: UInt64) -> CGFloat {
         CGFloat(Double(value >> 11) / Double(1 << 53))
     }
@@ -292,6 +429,127 @@ struct RainPositionGenerator {
             value = (value ^ (value >> 27)) &* 0x94D049BB133111EB
             return value ^ (value >> 31)
         }
+    }
+}
+
+struct RainRingGeometry: Equatable {
+    let particleID: UUID
+    let center: CGPoint
+    let radius: CGFloat
+    let opacity: Double
+}
+
+struct RainOverlapGlint: Equatable {
+    let position: CGPoint
+    let strength: Double
+    let sourceOpacity: Double
+}
+
+enum RainOverlapGlintGeometry {
+    static let maximumGlintCount = 4
+    static let maximumOverlapFraction: CGFloat = 0.55
+    static let minimumGlintSeparation: CGFloat = 4
+
+    static func glints(for rings: [RainRingGeometry]) -> [RainOverlapGlint] {
+        guard rings.count > 1 else { return [] }
+
+        var candidates: [RainOverlapGlint] = []
+        for firstIndex in rings.indices {
+            for secondIndex in rings.index(after: firstIndex)..<rings.endIndex {
+                let first = rings[firstIndex]
+                let second = rings[secondIndex]
+                guard first.particleID != second.particleID else { continue }
+                candidates.append(contentsOf: intersections(between: first, and: second))
+            }
+        }
+
+        candidates.sort {
+            ($0.strength * $0.sourceOpacity) > ($1.strength * $1.sourceOpacity)
+        }
+
+        var selected: [RainOverlapGlint] = []
+        for candidate in candidates {
+            let isTooClose = selected.contains {
+                hypot(
+                    candidate.position.x - $0.position.x,
+                    candidate.position.y - $0.position.y
+                ) < minimumGlintSeparation
+            }
+            guard !isTooClose else { continue }
+            selected.append(candidate)
+            if selected.count == maximumGlintCount { break }
+        }
+        return selected
+    }
+
+    private static func intersections(
+        between first: RainRingGeometry,
+        and second: RainRingGeometry
+    ) -> [RainOverlapGlint] {
+        guard first.radius > 0, second.radius > 0,
+              first.opacity > 0, second.opacity > 0 else {
+            return []
+        }
+
+        let deltaX = second.center.x - first.center.x
+        let deltaY = second.center.y - first.center.y
+        let centerDistance = hypot(deltaX, deltaY)
+        let radiusSum = first.radius + second.radius
+        let radiusDifference = abs(first.radius - second.radius)
+        guard centerDistance > 0.001,
+              centerDistance < radiusSum,
+              centerDistance > radiusDifference else {
+            return []
+        }
+
+        // Restrict the highlight to the early part of a collision so it reads
+        // as a passing reflection instead of a persistent marker.
+        let overlapFraction = (radiusSum - centerDistance)
+            / min(first.radius, second.radius)
+        guard overlapFraction > 0,
+              overlapFraction < maximumOverlapFraction else {
+            return []
+        }
+
+        let distanceToChord = (
+            (first.radius * first.radius)
+                - (second.radius * second.radius)
+                + (centerDistance * centerDistance)
+        ) / (2 * centerDistance)
+        let halfChordSquared = (first.radius * first.radius)
+            - (distanceToChord * distanceToChord)
+        guard halfChordSquared > 0.25 else { return [] }
+
+        let halfChord = sqrt(halfChordSquared)
+        let chordCenter = CGPoint(
+            x: first.center.x + (distanceToChord * deltaX / centerDistance),
+            y: first.center.y + (distanceToChord * deltaY / centerDistance)
+        )
+        let offsetX = -deltaY * halfChord / centerDistance
+        let offsetY = deltaX * halfChord / centerDistance
+        let strength = sin(
+            .pi * Double(overlapFraction / maximumOverlapFraction)
+        )
+        let sourceOpacity = min(first.opacity, second.opacity)
+
+        return [
+            RainOverlapGlint(
+                position: CGPoint(
+                    x: chordCenter.x + offsetX,
+                    y: chordCenter.y + offsetY
+                ),
+                strength: strength,
+                sourceOpacity: sourceOpacity
+            ),
+            RainOverlapGlint(
+                position: CGPoint(
+                    x: chordCenter.x - offsetX,
+                    y: chordCenter.y - offsetY
+                ),
+                strength: strength,
+                sourceOpacity: sourceOpacity
+            )
+        ]
     }
 }
 
@@ -366,11 +624,21 @@ final class RainParticleStore: ObservableObject {
             markSeen(event.id)
             guard visualStyle == .stillRain else { continue }
 
+            let effectiveHitCount = RainRippleSurprise.supportsRepeatedHits(
+                event.hapticType
+            ) ? hitsPerPulse : 1
+            let motif = RainSpatialMotif.selection(
+                seed: event.positionSeed,
+                hitCount: effectiveHitCount
+            )
             var position = RainPositionGenerator.normalizedPosition(
                 seed: event.positionSeed,
-                hitIndex: event.hitIndex
+                hitIndex: event.hitIndex,
+                hitCount: effectiveHitCount,
+                motif: motif
             )
-            if let previous = particles.last?.position,
+            if motif == .organic,
+               let previous = particles.last?.position,
                hypot(position.x - previous.x, position.y - previous.y) < 0.13 {
                 position.x = position.x < 0.62 ? position.x + 0.27 : position.x - 0.27
                 position.y = position.y < 0.58 ? position.y + 0.18 : position.y - 0.18
@@ -546,6 +814,124 @@ struct RainSurfaceView: View {
                 )
             }
         }
+
+        drawOverlapGlints(
+            among: particles,
+            at: date,
+            in: size,
+            context: &context
+        )
+    }
+
+    private func drawOverlapGlints(
+        among particles: [RainParticle],
+        at date: Date,
+        in size: CGSize,
+        context: inout GraphicsContext
+    ) {
+        let rings = visibleRingGeometries(
+            for: particles,
+            at: date,
+            in: size
+        )
+        let glints = RainOverlapGlintGeometry.glints(for: rings)
+        let intensityMultiplier = RainVisualIntensity.rippleOpacityMultiplier(
+            for: intensity
+        )
+
+        for glint in glints {
+            let opacity = min(
+                glint.sourceOpacity
+                    * 2.6
+                    * glint.strength
+                    * intensityMultiplier,
+                0.78
+            )
+            guard opacity > 0.025 else { continue }
+
+            let coreRadius = 0.75 + (CGFloat(glint.strength) * 0.65)
+            let coreRect = CGRect(
+                x: glint.position.x - coreRadius,
+                y: glint.position.y - coreRadius,
+                width: coreRadius * 2,
+                height: coreRadius * 2
+            )
+            context.drawLayer { glowContext in
+                glowContext.addFilter(.blur(radius: 2.0))
+                let glowRadius = coreRadius * 2.5
+                let glowRect = CGRect(
+                    x: glint.position.x - glowRadius,
+                    y: glint.position.y - glowRadius,
+                    width: glowRadius * 2,
+                    height: glowRadius * 2
+                )
+                glowContext.fill(
+                    Path(ellipseIn: glowRect),
+                    with: .color(RainRipplePalette.moonlight.opacity(opacity * 0.55))
+                )
+            }
+            context.fill(
+                Path(ellipseIn: coreRect),
+                with: .color(RainRipplePalette.moonlight.opacity(opacity))
+            )
+        }
+    }
+
+    private func visibleRingGeometries(
+        for particles: [RainParticle],
+        at date: Date,
+        in size: CGSize
+    ) -> [RainRingGeometry] {
+        var rings: [RainRingGeometry] = []
+        rings.reserveCapacity(particles.count * 2)
+
+        for particle in particles where !particle.usesReducedMotion {
+            let elapsed = date.timeIntervalSince(particle.startedAt)
+            guard elapsed >= 0, elapsed <= particle.totalLifetime else { continue }
+
+            let style = particle.style
+            let particleCenter = CGPoint(
+                x: particle.position.x * size.width,
+                y: particle.position.y * size.height
+            )
+            for ringIndex in 0..<style.ringCount {
+                let ringElapsed = elapsed
+                    - (Double(ringIndex) * style.secondaryRingDelay)
+                guard ringElapsed >= 0,
+                      ringElapsed <= particle.animationLifetime else {
+                    continue
+                }
+
+                let progress = min(
+                    max(ringElapsed / particle.animationLifetime, 0),
+                    1
+                )
+                let easedProgress = 1 - pow(1 - progress, 2)
+                let radius = style.initialRadius
+                    + (((style.finalRadius * particle.radiusScale)
+                        - style.initialRadius) * CGFloat(easedProgress))
+                let fadeIn = min(ringElapsed / 0.07, 1)
+                let secondaryStrength = ringIndex == 0 ? 1.0 : 0.58
+                let opacity = style.peakOpacity
+                    * fadeIn
+                    * pow(1 - progress, 0.92)
+                    * secondaryStrength
+                    * particle.opacityScale
+                guard opacity > 0.01 else { continue }
+
+                rings.append(RainRingGeometry(
+                    particleID: particle.id,
+                    center: CGPoint(
+                        x: particleCenter.x,
+                        y: particleCenter.y
+                            + (style.verticalDrift * CGFloat(progress))
+                    ),
+                    radius: radius,
+                    opacity: opacity
+                ))
+            }
+        }
+        return rings
     }
 
     private func drawAnimatedParticle(
