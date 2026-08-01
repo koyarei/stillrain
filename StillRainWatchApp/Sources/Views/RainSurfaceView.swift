@@ -48,17 +48,23 @@ enum RainRippleSurprise {
     static let opacityScale = 1.35
     static let lineWidthScale: CGFloat = 1.15
     static let glowStrength = 0.38
+    static let echoDelay: TimeInterval = 0.15
+    static let echoLifetime: TimeInterval = 0.62
+    static let reducedMotionEchoLifetime: TimeInterval = 0.42
+    static let echoInitialRadius: CGFloat = 1.4
+    static let echoFinalRadius: CGFloat = 9.5
+    static let echoLineWidth: CGFloat = 0.85
+
+    private static let echoOccurrenceSalt: UInt64 = 0xD1B54A32D192ED03
+    private static let echoDirectionSalt: UInt64 = 0x94D049BB133111EB
+    private static let echoDistanceSalt: UInt64 = 0xBF58476D1CE4E5B9
 
     static func featuredHitIndex(seed: UInt64, hitCount: Int) -> Int? {
         guard hitCount > 1 else { return nil }
 
         // Mix the pulse seed before choosing an index so the visual choice is
         // random in use but remains stable through SwiftUI redraws.
-        var value = seed &+ 0x9E3779B97F4A7C15
-        value = (value ^ (value >> 30)) &* 0xBF58476D1CE4E5B9
-        value = (value ^ (value >> 27)) &* 0x94D049BB133111EB
-        value ^= value >> 31
-        return Int(value % UInt64(hitCount))
+        return Int(mixed(seed) % UInt64(hitCount))
     }
 
     static func isFeatured(_ event: HapticVisualEvent, hitsPerPulse: Int) -> Bool {
@@ -73,6 +79,32 @@ enum RainRippleSurprise {
             return false
         }
         return event.hitIndex == featuredIndex
+    }
+
+    static func echoPosition(seed: UInt64, around position: CGPoint) -> CGPoint? {
+        // Roughly one in three featured pulses receives an echo. Separate salts
+        // keep occurrence, direction, and distance independent of hit selection.
+        guard mixed(seed ^ echoOccurrenceSalt).isMultiple(of: 3) else {
+            return nil
+        }
+
+        let angle = unit(mixed(seed ^ echoDirectionSalt)) * .pi * 2
+        let distance = 0.055 + (unit(mixed(seed ^ echoDistanceSalt)) * 0.03)
+        return CGPoint(
+            x: min(max(position.x + (cos(angle) * distance), 0.06), 0.94),
+            y: min(max(position.y + (sin(angle) * distance), 0.06), 0.94)
+        )
+    }
+
+    private static func mixed(_ seed: UInt64) -> UInt64 {
+        var value = seed &+ 0x9E3779B97F4A7C15
+        value = (value ^ (value >> 30)) &* 0xBF58476D1CE4E5B9
+        value = (value ^ (value >> 27)) &* 0x94D049BB133111EB
+        return value ^ (value >> 31)
+    }
+
+    private static func unit(_ value: UInt64) -> CGFloat {
+        CGFloat(Double(value >> 11) / Double(1 << 53))
     }
 }
 
@@ -251,6 +283,7 @@ struct RainParticle: Identifiable, Equatable {
     let startedAt: Date
     let usesReducedMotion: Bool
     let isFeatured: Bool
+    let echoPosition: CGPoint?
 
     var lifetimeScale: Double {
         isFeatured ? RainRippleSurprise.lifetimeScale : 1
@@ -273,10 +306,15 @@ struct RainParticle: Identifiable, Equatable {
     }
 
     var totalLifetime: TimeInterval {
-        usesReducedMotion
+        let primaryLifetime = usesReducedMotion
             ? RainVisualTuning.reducedMotionLifetime * lifetimeScale
             : animationLifetime
                 + (style.secondaryRingDelay * Double(max(0, style.ringCount - 1)))
+        guard echoPosition != nil else { return primaryLifetime }
+        let echoLifetime = usesReducedMotion
+            ? RainRippleSurprise.reducedMotionEchoLifetime
+            : RainRippleSurprise.echoLifetime
+        return max(primaryLifetime, RainRippleSurprise.echoDelay + echoLifetime)
     }
 }
 
@@ -315,16 +353,23 @@ final class RainParticleStore: ObservableObject {
                 position.y = position.y < 0.58 ? position.y + 0.18 : position.y - 0.18
             }
 
+            let isFeatured = RainRippleSurprise.isFeatured(
+                event,
+                hitsPerPulse: hitsPerPulse
+            )
             let particle = RainParticle(
                 id: event.id,
                 position: position,
                 style: RippleStyle.style(for: event.hapticType),
                 startedAt: event.occurredAt,
                 usesReducedMotion: reduceMotion,
-                isFeatured: RainRippleSurprise.isFeatured(
-                    event,
-                    hitsPerPulse: hitsPerPulse
-                )
+                isFeatured: isFeatured,
+                echoPosition: isFeatured
+                    ? RainRippleSurprise.echoPosition(
+                        seed: event.positionSeed,
+                        around: position
+                    )
+                    : nil
             )
             latestParticle = particle
             guard now.timeIntervalSince(particle.startedAt) < particle.totalLifetime else { continue }
@@ -465,6 +510,18 @@ struct RainSurfaceView: View {
             } else {
                 drawAnimatedParticle(particle, elapsed: elapsed, center: center, context: &context)
             }
+
+            if let echoPosition = particle.echoPosition {
+                drawEcho(
+                    for: particle,
+                    elapsed: elapsed,
+                    center: CGPoint(
+                        x: echoPosition.x * size.width,
+                        y: echoPosition.y * size.height
+                    ),
+                    context: &context
+                )
+            }
         }
     }
 
@@ -569,6 +626,56 @@ struct RainSurfaceView: View {
         )
     }
 
+    private func drawEcho(
+        for particle: RainParticle,
+        elapsed: TimeInterval,
+        center: CGPoint,
+        context: inout GraphicsContext
+    ) {
+        let echoElapsed = elapsed - RainRippleSurprise.echoDelay
+        let lifetime = particle.usesReducedMotion
+            ? RainRippleSurprise.reducedMotionEchoLifetime
+            : RainRippleSurprise.echoLifetime
+        guard echoElapsed >= 0, echoElapsed <= lifetime else { return }
+
+        let progress = min(max(echoElapsed / lifetime, 0), 1)
+        let radius: CGFloat
+        let opacityCurve: Double
+        if particle.usesReducedMotion {
+            radius = RainRippleSurprise.echoFinalRadius * 0.56
+            opacityCurve = sin(.pi * progress)
+        } else {
+            let easedProgress = 1 - pow(1 - progress, 2)
+            radius = RainRippleSurprise.echoInitialRadius
+                + ((RainRippleSurprise.echoFinalRadius
+                    - RainRippleSurprise.echoInitialRadius) * CGFloat(easedProgress))
+            let fadeIn = min(echoElapsed / 0.055, 1)
+            opacityCurve = fadeIn * pow(1 - progress, 1.05)
+        }
+
+        let opacity = particle.style.peakOpacity
+            * 0.88
+            * opacityCurve
+            * RainVisualIntensity.rippleOpacityMultiplier(for: intensity)
+        let rect = CGRect(
+            x: center.x - radius,
+            y: center.y - radius,
+            width: radius * 2,
+            height: radius * 2
+        )
+        strokeRipple(
+            Path(ellipseIn: rect),
+            color: RainRipplePalette.color(
+                for: particle.style,
+                isFeatured: true
+            ),
+            opacity: opacity,
+            baseLineWidth: RainRippleSurprise.echoLineWidth,
+            isFeatured: true,
+            context: &context
+        )
+    }
+
     private func drawAlwaysOnParticle(
         _ particle: RainParticle,
         in size: CGSize,
@@ -603,6 +710,33 @@ struct RainSurfaceView: View {
             isFeatured: particle.isFeatured,
             context: &context
         )
+
+        if let echoPosition = particle.echoPosition {
+            let echoCenter = CGPoint(
+                x: echoPosition.x * size.width,
+                y: echoPosition.y * size.height
+            )
+            let radius = RainRippleSurprise.echoFinalRadius * 0.68
+            let rect = CGRect(
+                x: echoCenter.x - radius,
+                y: echoCenter.y - radius,
+                width: radius * 2,
+                height: radius * 2
+            )
+            strokeRipple(
+                Path(ellipseIn: rect),
+                color: RainRipplePalette.color(
+                    for: particle.style,
+                    isFeatured: true
+                ),
+                opacity: particle.style.peakOpacity
+                    * 0.5
+                    * RainVisualIntensity.rippleOpacityMultiplier(for: intensity),
+                baseLineWidth: RainRippleSurprise.echoLineWidth,
+                isFeatured: true,
+                context: &context
+            )
+        }
     }
 
     private func strokeRipple(

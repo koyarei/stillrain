@@ -50,6 +50,31 @@ final class RainRippleSurpriseTests: XCTestCase {
     func testSingleHitPulseHasNoFeaturedHit() {
         XCTAssertNil(RainRippleSurprise.featuredHitIndex(seed: 42, hitCount: 1))
     }
+
+    func testEchoSelectionIsOccasionalAndDeterministic() throws {
+        let center = CGPoint(x: 0.5, y: 0.5)
+        let echoSeeds = (0..<120).compactMap { value -> UInt64? in
+            let seed = UInt64(value)
+            return RainRippleSurprise.echoPosition(seed: seed, around: center) == nil
+                ? nil
+                : seed
+        }
+
+        XCTAssertGreaterThan(echoSeeds.count, 0)
+        XCTAssertLessThan(echoSeeds.count, 120)
+
+        let seed = try XCTUnwrap(echoSeeds.first)
+        let first = try XCTUnwrap(
+            RainRippleSurprise.echoPosition(seed: seed, around: center)
+        )
+        let second = try XCTUnwrap(
+            RainRippleSurprise.echoPosition(seed: seed, around: center)
+        )
+        XCTAssertEqual(first.x, second.x, accuracy: 0.000_001)
+        XCTAssertEqual(first.y, second.y, accuracy: 0.000_001)
+        XCTAssertEqual(RainRippleSurprise.echoDelay, 0.15)
+        XCTAssertLessThan(hypot(first.x - center.x, first.y - center.y), 0.1)
+    }
 }
 
 @MainActor
@@ -159,6 +184,7 @@ final class RainParticleStoreTests: XCTestCase {
         )
 
         XCTAssertEqual(store.particles.first?.isFeatured, false)
+        XCTAssertNil(store.particles.first?.echoPosition)
     }
 
     func testFeaturedRippleLivesLongerThanOrdinaryRipple() {
@@ -182,6 +208,31 @@ final class RainParticleStoreTests: XCTestCase {
         let ordinary = store.particles.first { !$0.isFeatured }
         XCTAssertGreaterThan(featured!.totalLifetime, ordinary!.totalLifetime)
         XCTAssertGreaterThan(featured!.radiusScale, ordinary!.radiusScale)
+    }
+
+    func testOnlyFeaturedRippleCanReceiveEcho() throws {
+        let store = RainParticleStore(maximumParticleCount: 8)
+        let now = Date()
+        let center = CGPoint(x: 0.5, y: 0.5)
+        let seed = try XCTUnwrap((0..<100).map(UInt64.init).first {
+            RainRippleSurprise.echoPosition(seed: $0, around: center) != nil
+        })
+        let pulseID = UUID()
+        let events = (0..<8).map {
+            event(pulseID: pulseID, hitIndex: $0, date: now, seed: seed)
+        }
+
+        store.consume(
+            events,
+            visualStyle: .stillRain,
+            reduceMotion: false,
+            hitsPerPulse: 8,
+            now: now
+        )
+
+        let echoed = store.particles.filter { $0.echoPosition != nil }
+        XCTAssertEqual(echoed.count, 1)
+        XCTAssertTrue(try XCTUnwrap(echoed.first).isFeatured)
     }
 
     private func event(

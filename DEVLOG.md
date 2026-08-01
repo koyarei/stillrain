@@ -9,6 +9,9 @@ so the evolution of the product is easier to follow than a raw commit list.
 - Added one randomly selected featured ripple to every repeated haptic pulse.
   The selection is seeded per pulse, so it feels unpredictable during use but
   remains stable across SwiftUI redraws.
+- Added occasional echo droplets: tiny nearby companion ripples that follow a
+  featured ripple after 150 milliseconds, with deterministic rarity and
+  Reduced Motion and Always-On treatments.
 - Made the featured ripple larger, brighter, softly glowing, and slower to
   disappear while preserving each haptic type's established color family.
 - Kept single and compound haptics visually restrained, and carried the new
@@ -22,7 +25,7 @@ so the evolution of the product is easier to follow than a raw commit list.
   the extended runtime session alive until that screen is dismissed.
 - Updated product and technical documentation to match the runtime and duration
   behavior.
-- Verified the watchOS build and all 50 unit tests in the watchOS simulator.
+- Verified the watchOS build and all 52 unit tests in the watchOS simulator.
 
 ## 2026-07-30 — README presentation polish
 
