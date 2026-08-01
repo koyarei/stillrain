@@ -11,7 +11,8 @@ struct CatalystSessionView: View {
                 RainSurfaceView(
                     events: sessionManager.hapticVisualEvents,
                     isSessionActive: sessionManager.state == .starting || sessionManager.state == .active,
-                    intensity: sessionManager.visualIntensity
+                    intensity: sessionManager.visualIntensity,
+                    hitsPerPulse: sessionManager.clicksPerPulse
                 )
             } else {
                 Color.black

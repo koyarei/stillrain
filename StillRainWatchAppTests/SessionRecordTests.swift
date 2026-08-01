@@ -2,6 +2,20 @@ import XCTest
 @testable import StillRainWatchApp
 
 final class SessionRecordTests: XCTestCase {
+    func testCompletionScreenPendingStateSurvivesRelaunch() throws {
+        let suiteName = "CompletionScreenStateStoreTests"
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: suiteName))
+        defer {
+            defaults.removePersistentDomain(forName: suiteName)
+        }
+
+        CompletionScreenStateStore.setPending(true, in: defaults)
+        XCTAssertTrue(CompletionScreenStateStore.isPending(in: defaults))
+
+        CompletionScreenStateStore.setPending(false, in: defaults)
+        XCTAssertFalse(CompletionScreenStateStore.isPending(in: defaults))
+    }
+
     func testOnlyMaxDurationPresentsNaturalCompletionScreen() {
         XCTAssertTrue(EndReason.maxDurationReached.showsNaturalCompletionScreen)
         XCTAssertFalse(EndReason.userStopped.showsNaturalCompletionScreen)

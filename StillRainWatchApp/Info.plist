@@ -41,7 +41,7 @@
 	<true/>
 	<key>WKBackgroundModes</key>
 	<array>
-		<string>self-care</string>
+		<string>mindfulness</string>
 	</array>
 	<key>WKWatchOnly</key>
 	<true/>

@@ -115,6 +115,9 @@ Open `StillRain.xcodeproj` in Xcode and run the
 targets, source modules, bundle identifiers, and deep-link scheme all share the
 StillRain identity.
 
+See the [development log](./DEVLOG.md) for the project's evolution from the
+original Catalyst Bell prototype through the current StillRain experience.
+
 ## Maker
 
 Created with care by [Sizhan Shi](https://github.com/koyarei).

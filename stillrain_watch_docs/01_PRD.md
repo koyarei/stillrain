@@ -144,7 +144,7 @@ The MVP succeeds if:
 
 ## 11. Product risks
 ### Risk: watchOS haptic/background limitations
-Mitigation: use WatchKit haptics and evaluate WKExtendedRuntimeSession with a mindfulness or self-care background mode. Test on real hardware.
+Mitigation: use WatchKit haptics with a mindfulness WKExtendedRuntimeSession. Test on real hardware.
 
 ### Risk: visible UI causes social friction
 Mitigation: dark screen only, no visible words, one-tap stop.

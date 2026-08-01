@@ -262,6 +262,21 @@ enum EndReason: String, Codable, CaseIterable {
     }
 }
 
+struct CompletionScreenStateStore {
+    private static let pendingKey = "completionScreenPending"
+
+    static func isPending(in defaults: UserDefaults = .standard) -> Bool {
+        defaults.bool(forKey: pendingKey)
+    }
+
+    static func setPending(
+        _ isPending: Bool,
+        in defaults: UserDefaults = .standard
+    ) {
+        defaults.set(isPending, forKey: pendingKey)
+    }
+}
+
 enum LaunchSource: String, Codable, CaseIterable, Equatable {
     case complication
     case appIcon

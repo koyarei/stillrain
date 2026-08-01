@@ -71,7 +71,7 @@ Settings can be accessible from the watch app when not in an active session, or 
 
 Possible settings:
 - haptic pattern: Gentle, Slow, Steady
-- max duration: 2, 5, 10, 15 minutes
+- max duration: 2, 5, 10, 15, 20 minutes
 - location logging: Off / Coarse only
 - delete all history
 - export local data, if iPhone companion exists

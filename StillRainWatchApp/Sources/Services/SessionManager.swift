@@ -110,6 +110,7 @@ final class SessionManager: NSObject, ObservableObject {
     private static let maxDurationKey = "maxDurationMinutes"
     static let clicksPerPulseChoices = Array(1...12)
     static let pulsesPerMinuteChoices = [6, 8, 10, 12, 15, 20]
+    static let maxDurationMinuteChoices = [2.0, 5.0, 10.0, 15.0, 20.0]
 
     private let store: SessionStoring
     private let hapticEngine: HapticEngine
@@ -150,6 +151,10 @@ final class SessionManager: NSObject, ObservableObject {
         maxDurationMinutes = savedMaxDuration > 0 ? savedMaxDuration : 10
         super.init()
 
+        if CompletionScreenStateStore.isPending() {
+            state = .ended
+        }
+
         self.hapticEngine.visualEventHandler = { [weak self] event in
             self?.recordVisualEvent(event)
         }
@@ -176,6 +181,7 @@ final class SessionManager: NSObject, ObservableObject {
         }
 
         isStopping = false
+        CompletionScreenStateStore.setPending(false)
         hapticVisualEvents.removeAll()
         state = .starting
         currentDraft = SessionDraft(launchSource: launchSource)
@@ -208,6 +214,7 @@ final class SessionManager: NSObject, ObservableObject {
 
         isStopping = true
         if reason.showsNaturalCompletionScreen {
+            CompletionScreenStateStore.setPending(true)
             state = .ended
         } else {
             state = reason == .runtimeExpired || reason == .systemInterrupted
@@ -218,8 +225,10 @@ final class SessionManager: NSObject, ObservableObject {
         hapticVisualEvents.removeAll()
         maxDurationTimer?.invalidate()
         maxDurationTimer = nil
-        runtimeSession?.invalidate()
-        runtimeSession = nil
+        if !reason.showsNaturalCompletionScreen {
+            runtimeSession?.invalidate()
+            runtimeSession = nil
+        }
 
         Task {
             await save(draft: draft, reason: reason)
@@ -228,6 +237,9 @@ final class SessionManager: NSObject, ObservableObject {
 
     func dismissCompletionScreen() {
         guard state == .ended else { return }
+        CompletionScreenStateStore.setPending(false)
+        runtimeSession?.invalidate()
+        runtimeSession = nil
         state = .idle
     }
 

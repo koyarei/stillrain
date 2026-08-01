@@ -3,6 +3,21 @@ import XCTest
 @testable import StillRainWatchApp
 
 final class ComplicationLaunchTests: XCTestCase {
+    func testAppUsesMindfulnessExtendedRuntimeCategory() {
+        let backgroundModes = Bundle.main.object(
+            forInfoDictionaryKey: "WKBackgroundModes"
+        ) as? [String]
+
+        XCTAssertEqual(backgroundModes, ["mindfulness"])
+    }
+
+    func testMaxDurationChoicesIncludeTwentyMinutes() {
+        XCTAssertEqual(
+            SessionManager.maxDurationMinuteChoices,
+            [2, 5, 10, 15, 20]
+        )
+    }
+
     func testComplicationURLStartsWithComplicationSource() {
         let url = URL(string: "stillrain://start?source=complication")!
 

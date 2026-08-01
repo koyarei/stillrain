@@ -30,7 +30,7 @@ Recommended MVP default: a gentle `.click` or other subtle type, repeated on a s
 ### Extended runtime
 Use `WKExtendedRuntimeSession` so the session can continue if the user drops their wrist or stops interacting.
 
-Recommended session category: evaluate `mindfulness` or `self-care` background mode based on Apple’s current definitions and App Store review fit.
+Session category: use the `mindfulness` background mode so configured sessions up to 20 minutes remain within watchOS runtime limits.
 
 Requirements:
 - Session manager should live at app/service scope, not inside a transient view object.

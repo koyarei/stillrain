@@ -86,10 +86,9 @@ struct SettingsView: View {
                 }
 
                 Picker("Max Duration", selection: $sessionManager.maxDurationMinutes) {
-                    Text("2 min").tag(2.0)
-                    Text("5 min").tag(5.0)
-                    Text("10 min").tag(10.0)
-                    Text("15 min").tag(15.0)
+                    ForEach(SessionManager.maxDurationMinuteChoices, id: \.self) { minutes in
+                        Text("\(Int(minutes)) min").tag(minutes)
+                    }
                 }
             }
 

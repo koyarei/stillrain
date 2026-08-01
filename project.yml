@@ -39,7 +39,7 @@ targets:
               - stillrain
         NSLocationWhenInUseUsageDescription: StillRain uses your approximate location only when saving a grounding session, if you enable location logging.
         WKBackgroundModes:
-          - self-care
+          - mindfulness
     settings:
       base:
         CURRENT_PROJECT_VERSION: 1

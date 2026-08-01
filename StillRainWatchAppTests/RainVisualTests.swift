@@ -36,6 +36,22 @@ final class RainPositionGeneratorTests: XCTestCase {
     }
 }
 
+final class RainRippleSurpriseTests: XCTestCase {
+    func testRepeatedPulseSelectsExactlyOneStableFeaturedHit() {
+        let seed: UInt64 = 0xA11CE
+        let firstSelection = RainRippleSurprise.featuredHitIndex(seed: seed, hitCount: 8)
+        let secondSelection = RainRippleSurprise.featuredHitIndex(seed: seed, hitCount: 8)
+
+        XCTAssertEqual(firstSelection, secondSelection)
+        XCTAssertNotNil(firstSelection)
+        XCTAssertTrue((0..<8).contains(firstSelection!))
+    }
+
+    func testSingleHitPulseHasNoFeaturedHit() {
+        XCTAssertNil(RainRippleSurprise.featuredHitIndex(seed: 42, hitCount: 1))
+    }
+}
+
 @MainActor
 final class RainParticleStoreTests: XCTestCase {
     func testMaximumParticleCountRemovesOldestParticle() {
@@ -99,13 +115,83 @@ final class RainParticleStoreTests: XCTestCase {
         XCTAssertEqual(store.latestParticle?.id, latestEvent.id)
     }
 
+    func testExactlyOneRippleIsFeaturedInRepeatedPulse() {
+        let store = RainParticleStore(maximumParticleCount: 8)
+        let now = Date()
+        let pulseID = UUID()
+        let events = (0..<8).map {
+            event(
+                pulseID: pulseID,
+                hitIndex: $0,
+                date: now,
+                seed: 0xA11CE
+            )
+        }
+
+        store.consume(
+            events,
+            visualStyle: .stillRain,
+            reduceMotion: false,
+            hitsPerPulse: 8,
+            now: now
+        )
+
+        XCTAssertEqual(store.particles.filter(\.isFeatured).count, 1)
+    }
+
+    func testCompoundHapticIsNotFeaturedByRepeatSetting() {
+        let store = RainParticleStore()
+        let now = Date()
+        let event = HapticVisualEvent(
+            pulseID: UUID(),
+            hitIndex: 0,
+            hapticType: .success,
+            occurredAt: now,
+            positionSeed: 42
+        )
+
+        store.consume(
+            [event],
+            visualStyle: .stillRain,
+            reduceMotion: false,
+            hitsPerPulse: 8,
+            now: now
+        )
+
+        XCTAssertEqual(store.particles.first?.isFeatured, false)
+    }
+
+    func testFeaturedRippleLivesLongerThanOrdinaryRipple() {
+        let store = RainParticleStore(maximumParticleCount: 8)
+        let now = Date()
+        let seed: UInt64 = 0xA11CE
+        let pulseID = UUID()
+        let events = (0..<8).map {
+            event(pulseID: pulseID, hitIndex: $0, date: now, seed: seed)
+        }
+
+        store.consume(
+            events,
+            visualStyle: .stillRain,
+            reduceMotion: false,
+            hitsPerPulse: 8,
+            now: now
+        )
+
+        let featured = store.particles.first(where: \.isFeatured)
+        let ordinary = store.particles.first { !$0.isFeatured }
+        XCTAssertGreaterThan(featured!.totalLifetime, ordinary!.totalLifetime)
+        XCTAssertGreaterThan(featured!.radiusScale, ordinary!.radiusScale)
+    }
+
     private func event(
+        pulseID: UUID = UUID(),
         hitIndex: Int = 0,
         date: Date,
         seed: UInt64 = 17
     ) -> HapticVisualEvent {
         HapticVisualEvent(
-            pulseID: UUID(),
+            pulseID: pulseID,
             hitIndex: hitIndex,
             hapticType: .click,
             occurredAt: date,
