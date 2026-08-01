@@ -7,13 +7,32 @@ final class RippleStyleTests: XCTestCase {
         XCTAssertEqual(RippleStyle.style(for: .click), .click)
         XCTAssertEqual(RippleStyle.style(for: .directionDown), .directionDown)
         XCTAssertEqual(RippleStyle.style(for: .directionUp), .directionUp)
+        XCTAssertEqual(RippleStyle.style(for: .start), .transition)
+        XCTAssertEqual(RippleStyle.style(for: .stop), .transition)
         XCTAssertEqual(RippleStyle.style(for: .success), .success)
     }
 
     func testOtherSupportedTypesUseRestrainedClickFallback() {
-        XCTAssertEqual(RippleStyle.style(for: .start), .click)
-        XCTAssertEqual(RippleStyle.style(for: .stop), .click)
         XCTAssertEqual(RippleStyle.style(for: .failure), .click)
+    }
+
+    func testStylesFollowWristCalibratedStrengthOrder() {
+        let styles: [RippleStyle] = [
+            .click,
+            .transition,
+            .directionDown,
+            .directionUp,
+            .success
+        ]
+
+        XCTAssertEqual(styles.map(\.perceivedStrength), [1, 2, 3, 4, 5])
+        XCTAssertEqual(styles.map(\.finalRadius), [16, 21, 27, 34, 41])
+        for (weaker, stronger) in zip(styles, styles.dropFirst()) {
+            XCTAssertLessThan(weaker.finalRadius, stronger.finalRadius)
+            XCTAssertLessThan(weaker.peakOpacity, stronger.peakOpacity)
+            XCTAssertLessThan(weaker.lineWidth, stronger.lineWidth)
+            XCTAssertLessThan(weaker.lifetime, stronger.lifetime)
+        }
     }
 }
 

@@ -52,7 +52,7 @@ enum RainRippleSurprise {
     static let echoLifetime: TimeInterval = 0.62
     static let reducedMotionEchoLifetime: TimeInterval = 0.42
     static let echoInitialRadius: CGFloat = 1.4
-    static let echoFinalRadius: CGFloat = 9.5
+    static let minimumEchoFinalRadius: CGFloat = 5.5
     static let echoLineWidth: CGFloat = 0.85
 
     private static let echoOccurrenceSalt: UInt64 = 0xD1B54A32D192ED03
@@ -156,6 +156,7 @@ enum RainVisualIntensity {
 }
 
 struct RippleStyle: Equatable {
+    let perceivedStrength: Int
     let ringCount: Int
     let initialRadius: CGFloat
     let finalRadius: CGFloat
@@ -167,54 +168,72 @@ struct RippleStyle: Equatable {
     let verticalDrift: CGFloat
 
     static let click = RippleStyle(
+        perceivedStrength: 1,
         ringCount: 1,
         initialRadius: 3,
-        finalRadius: 26,
-        lifetime: 1.10,
-        peakOpacity: 0.27,
+        finalRadius: 16,
+        lifetime: 0.88,
+        peakOpacity: 0.22,
         secondaryRingDelay: 0,
-        lineWidth: 1.15,
-        impactPointRadius: 1.2,
+        lineWidth: 0.9,
+        impactPointRadius: 0.85,
+        verticalDrift: 0
+    )
+
+    static let transition = RippleStyle(
+        perceivedStrength: 2,
+        ringCount: 1,
+        initialRadius: 3,
+        finalRadius: 21,
+        lifetime: 0.98,
+        peakOpacity: 0.24,
+        secondaryRingDelay: 0,
+        lineWidth: 1.0,
+        impactPointRadius: 1.0,
         verticalDrift: 0
     )
 
     static let directionDown = RippleStyle(
+        perceivedStrength: 3,
         ringCount: 1,
         initialRadius: 3,
-        finalRadius: 25,
-        lifetime: 1.12,
-        peakOpacity: 0.30,
+        finalRadius: 27,
+        lifetime: 1.08,
+        peakOpacity: 0.27,
         secondaryRingDelay: 0,
-        lineWidth: 1.2,
-        impactPointRadius: 1.5,
-        verticalDrift: 0
-    )
-
-    static let directionUp = RippleStyle(
-        ringCount: 1,
-        initialRadius: 3,
-        finalRadius: 35,
-        lifetime: 1.32,
-        peakOpacity: 0.24,
-        secondaryRingDelay: 0,
-        lineWidth: 1.05,
-        impactPointRadius: 1.1,
-        verticalDrift: -2.5
-    )
-
-    static let success = RippleStyle(
-        ringCount: 2,
-        initialRadius: 3,
-        finalRadius: 31,
-        lifetime: 1.26,
-        peakOpacity: 0.28,
-        secondaryRingDelay: 0.13,
-        lineWidth: 1.15,
+        lineWidth: 1.08,
         impactPointRadius: 1.25,
         verticalDrift: 0
     )
 
+    static let directionUp = RippleStyle(
+        perceivedStrength: 4,
+        ringCount: 1,
+        initialRadius: 3,
+        finalRadius: 34,
+        lifetime: 1.20,
+        peakOpacity: 0.29,
+        secondaryRingDelay: 0,
+        lineWidth: 1.16,
+        impactPointRadius: 1.4,
+        verticalDrift: -2.5
+    )
+
+    static let success = RippleStyle(
+        perceivedStrength: 5,
+        ringCount: 2,
+        initialRadius: 3,
+        finalRadius: 41,
+        lifetime: 1.34,
+        peakOpacity: 0.32,
+        secondaryRingDelay: 0.13,
+        lineWidth: 1.24,
+        impactPointRadius: 1.6,
+        verticalDrift: 0
+    )
+
     static func style(for hapticType: WKHapticType) -> RippleStyle {
+        if hapticType == .start || hapticType == .stop { return .transition }
         if hapticType == .directionDown { return .directionDown }
         if hapticType == .directionUp { return .directionUp }
         if hapticType == .success { return .success }
@@ -299,6 +318,10 @@ struct RainParticle: Identifiable, Equatable {
 
     var lineWidthScale: CGFloat {
         isFeatured ? RainRippleSurprise.lineWidthScale : 1
+    }
+
+    var echoFinalRadius: CGFloat {
+        max(RainRippleSurprise.minimumEchoFinalRadius, style.finalRadius * 0.3)
     }
 
     var animationLifetime: TimeInterval {
@@ -642,12 +665,12 @@ struct RainSurfaceView: View {
         let radius: CGFloat
         let opacityCurve: Double
         if particle.usesReducedMotion {
-            radius = RainRippleSurprise.echoFinalRadius * 0.56
+            radius = particle.echoFinalRadius * 0.56
             opacityCurve = sin(.pi * progress)
         } else {
             let easedProgress = 1 - pow(1 - progress, 2)
             radius = RainRippleSurprise.echoInitialRadius
-                + ((RainRippleSurprise.echoFinalRadius
+                + ((particle.echoFinalRadius
                     - RainRippleSurprise.echoInitialRadius) * CGFloat(easedProgress))
             let fadeIn = min(echoElapsed / 0.055, 1)
             opacityCurve = fadeIn * pow(1 - progress, 1.05)
@@ -716,7 +739,7 @@ struct RainSurfaceView: View {
                 x: echoPosition.x * size.width,
                 y: echoPosition.y * size.height
             )
-            let radius = RainRippleSurprise.echoFinalRadius * 0.68
+            let radius = particle.echoFinalRadius * 0.68
             let rect = CGRect(
                 x: echoCenter.x - radius,
                 y: echoCenter.y - radius,
